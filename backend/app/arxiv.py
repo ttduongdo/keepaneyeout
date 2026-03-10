@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime
+import time
 from typing import Any
 from urllib.parse import quote_plus
 import xml.etree.ElementTree as ET
@@ -19,13 +20,14 @@ class ArxivPaper:
     title: str
     abstract: str
     authors: list[str]
+    categories: list[str]
     url: str
     published_at: datetime
 
 
 def fetch_arxiv(query: str, max_results: int = 25) -> list[ArxivPaper]:
     url = f"{ARXIV_API}?search_query={quote_plus(query)}&start=0&max_results={max_results}&sortBy=submittedDate&sortOrder=descending"
-    resp = httpx.get(url, timeout=30.0, follow_redirects=True)
+    resp = _with_retry(lambda: httpx.get(url, timeout=30.0, follow_redirects=True))
     resp.raise_for_status()
 
     ns = {"atom": "http://www.w3.org/2005/Atom"}
@@ -44,6 +46,8 @@ def fetch_arxiv(query: str, max_results: int = 25) -> list[ArxivPaper]:
             for author in entry.findall("atom:author", ns)
             if author.find("atom:name", ns) is not None and author.find("atom:name", ns).text
         ]
+        categories = [category.attrib.get("term", "").strip() for category in entry.findall("atom:category", ns)]
+        categories = [category for category in categories if category]
 
         papers.append(
             ArxivPaper(
@@ -51,7 +55,8 @@ def fetch_arxiv(query: str, max_results: int = 25) -> list[ArxivPaper]:
                 title=title,
                 abstract=abstract,
                 authors=authors,
-                url=entry_id,
+                categories=categories,
+                url=f"https://arxiv.org/abs/{external_id}",
                 published_at=published,
             )
         )
@@ -62,3 +67,15 @@ def fetch_arxiv(query: str, max_results: int = 25) -> list[ArxivPaper]:
 def _text(entry: ET.Element, path: str, ns: dict[str, Any]) -> str:
     el = entry.find(path, ns)
     return el.text if el is not None and el.text else ""
+
+
+def _with_retry(fn, retries: int = 3, base_sleep: float = 1.0):
+    for attempt in range(retries + 1):
+        try:
+            return fn()
+        except (httpx.HTTPError, httpx.TimeoutException) as exc:
+            if attempt >= retries:
+                raise
+            sleep_for = base_sleep * (2**attempt)
+            print(f"[retry] arXiv request failed ({exc}); sleeping {sleep_for:.1f}s")
+            time.sleep(sleep_for)

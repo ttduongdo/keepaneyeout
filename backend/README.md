@@ -10,39 +10,84 @@ pip install -e .[dev]
 cp .env.example .env
 ```
 
-## Environment Variables
+## Required Environment Variables
 
 - `DATABASE_URL`
-  - Host run (recommended for backend README flow): `postgresql+psycopg://postgres:postgres@localhost:5433/research_radar`
-  - Docker-internal hostname (`postgres`) is only for containers on the compose network.
 - `OPENAI_API_KEY`
-- `OPENAI_EMBEDDING_MODEL` (default: `text-embedding-3-large`)
-  - Current schema uses `vector(3072)`, so use a 3072-dim embedding model unless you regenerate migrations/schema.
-  - Baseline uses exact vector search (no ANN index) for compatibility.
-- `OPENAI_CHAT_MODEL` (default: `gpt-4o-mini`)
-- `CORS_ALLOW_ORIGINS` (default: `*`)
+- `OPENAI_EMBEDDING_MODEL`
+- `OPENAI_CHAT_MODEL`
+- `EMAIL_PROVIDER` (`resend`)
+- `RESEND_API_KEY`
+- `FROM_EMAIL`
+- `PUBLIC_APP_URL`
 
 ## Run API
-
-1. Ensure Postgres is running on `localhost:5433` (for example: `docker compose up -d postgres` from repo root).
-2. Run migrations and API:
 
 ```bash
 cd backend
 alembic upgrade head
+python -m app.seed_topics
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-## Ingest arXiv
+## Ingestion
 
 ```bash
-cd backend
-python -m app.ingest_arxiv --query "cat:cs.LG OR cat:cs.AI" --max_results 25
+python -m app.ingest_arxiv --query "cat:cs.LG OR cat:cs.AI" --max_results 50
+python -m app.ingest_hackernews --list topstories --max_items 50 --min_score 0 --include_comments false --max_comments 0
+```
+
+## Digest Generation
+
+```bash
+python -m app.generate_digest --date 2026-02-23
+```
+
+## Newsletter Sending
+
+Dry run (writes HTML files to `newsletter_dry_run/<date>/`):
+
+```bash
+python -m app.send_newsletters --date 2026-02-23 --dry_run true
+```
+
+Real send:
+
+```bash
+python -m app.send_newsletters --date 2026-02-23 --dry_run false
+```
+
+## Newsletter APIs
+
+Create/upsert subscription:
+
+```bash
+curl -X POST "http://localhost:8000/subscriptions" \
+  -H "Content-Type: application/json" \
+  -d '{"email":"you@example.com","topic_ids":[],"frequency":"daily"}'
+```
+
+List digests:
+
+```bash
+curl "http://localhost:8000/digests?limit=30"
+```
+
+Get digest by date:
+
+```bash
+curl "http://localhost:8000/digests/2026-02-23"
+```
+
+Unsubscribe:
+
+```bash
+curl "http://localhost:8000/unsubscribe?token=<token>"
 ```
 
 ## Tests
 
 ```bash
 cd backend
-pytest
+pytest -q
 ```

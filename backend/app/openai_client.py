@@ -52,3 +52,23 @@ def chat_with_context(query: str, context_blocks: list[str]) -> str:
     except APIError as exc:
         raise OpenAIServiceError(f"OpenAI chat request failed: {exc}") from exc
     return completion.choices[0].message.content or "No answer generated."
+
+
+def chat_markdown(system_prompt: str, user_prompt: str) -> str:
+    client = build_openai_client()
+    try:
+        completion = client.chat.completions.create(
+            model=settings.openai_chat_model,
+            temperature=0.2,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+        )
+    except RateLimitError as exc:
+        raise OpenAIServiceError(
+            "OpenAI quota/rate limit exceeded. Check billing/quota and API key."
+        ) from exc
+    except APIError as exc:
+        raise OpenAIServiceError(f"OpenAI chat request failed: {exc}") from exc
+    return completion.choices[0].message.content or "No markdown generated."
