@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <rect width="640" height="360" fill="#f8fafc"/>
+  <rect x="24" y="24" width="592" height="312" rx="24" fill="#e2e8f0"/>
+  <path d="M320 110 L420 140 V210 C420 250 382 282 320 300 C258 282 220 250 220 210 V140 Z" fill="#ffffff" stroke="#0f172a" stroke-width="2"/>
+  <circle cx="320" cy="200" r="22" fill="#0b6bcb"/>
+  <text x="48" y="72" font-family="IBM Plex Mono, monospace" font-size="20" fill="#0f172a">SECURITY</text>
+</svg>

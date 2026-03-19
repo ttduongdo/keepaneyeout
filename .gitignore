@@ -15,3 +15,8 @@ frontend/.env.local
 
 frontend/.next/
 frontend/node_modules/
+
+**/README.md
+!/README.md
+
+.DS_Store

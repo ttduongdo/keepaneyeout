@@ -2,7 +2,7 @@ from datetime import date
 from types import SimpleNamespace
 from uuid import uuid4
 
-from app.newsletter import send_newsletters_for_date
+from app.services.newsletter import send_newsletters_for_date
 
 
 class DummyResult:
@@ -48,7 +48,7 @@ def test_send_newsletters_calls_provider_with_unsubscribe(monkeypatch) -> None:
         stats={"source_counts": {"arxiv": 1}},
     )
 
-    monkeypatch.setattr("app.newsletter.get_digest_by_date", lambda db, digest_date: digest)
+    monkeypatch.setattr("app.services.newsletter.get_digest_by_date", lambda db, digest_date: digest)
 
     provider = ProviderMock()
     result = send_newsletters_for_date(
@@ -82,7 +82,7 @@ def test_send_newsletters_dry_run_writes_html(monkeypatch, tmp_path) -> None:
         content_md="# Digest\n\n- item",
         stats={"source_counts": {"arxiv": 1}},
     )
-    monkeypatch.setattr("app.newsletter.get_digest_by_date", lambda db, digest_date: digest)
+    monkeypatch.setattr("app.services.newsletter.get_digest_by_date", lambda db, digest_date: digest)
     monkeypatch.chdir(tmp_path)
 
     result = send_newsletters_for_date(

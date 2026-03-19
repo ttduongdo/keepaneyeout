@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <rect width="640" height="360" fill="#f8fafc"/>
+  <rect x="24" y="24" width="592" height="312" rx="24" fill="#e2e8f0"/>
+  <g fill="none" stroke="#0f172a" stroke-width="2">
+    <rect x="160" y="110" width="320" height="140" rx="16" fill="#ffffff"/>
+    <circle cx="240" cy="180" r="16" fill="#0b6bcb"/>
+    <circle cx="400" cy="180" r="16" fill="#0b6bcb"/>
+    <path d="M240 220 L400 220"/>
+  </g>
+  <text x="48" y="72" font-family="IBM Plex Mono, monospace" font-size="20" fill="#0f172a">ROBOTICS</text>
+</svg>

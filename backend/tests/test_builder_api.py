@@ -3,7 +3,7 @@ from uuid import uuid4
 from fastapi.testclient import TestClient
 
 from app.main import app
-from app.schemas import BuilderCitation, CompareResponse, ReimplementResponse
+from app.routes.schemas import BuilderCitation, CompareResponse, ReimplementResponse
 
 
 client = TestClient(app)
@@ -27,7 +27,7 @@ def test_reimplement_happy_path(monkeypatch) -> None:
             citations=[_citation(), _citation()],
         )
 
-    monkeypatch.setattr("app.main.reimplement_brief", fake_reimplement_brief)
+    monkeypatch.setattr("app.routes.api.reimplement_brief", fake_reimplement_brief)
 
     response = client.post(
         "/reimplement",
@@ -54,7 +54,7 @@ def test_compare_happy_path(monkeypatch) -> None:
             citations=[_citation(), _citation()],
         )
 
-    monkeypatch.setattr("app.main.compare_brief", fake_compare_brief)
+    monkeypatch.setattr("app.routes.api.compare_brief", fake_compare_brief)
 
     response = client.post(
         "/compare",

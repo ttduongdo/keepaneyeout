@@ -2,7 +2,7 @@ from datetime import UTC, date, datetime
 from types import SimpleNamespace
 from uuid import uuid4
 
-from app.newsletter import generate_digest_for_date
+from app.services.newsletter import generate_digest_for_date
 
 
 def test_generate_digest_deterministic(monkeypatch) -> None:
@@ -25,8 +25,8 @@ def test_generate_digest_deterministic(monkeypatch) -> None:
         ),
     ]
 
-    monkeypatch.setattr("app.newsletter._fetch_documents", lambda db, start_dt, end_dt: docs)
-    monkeypatch.setattr("app.newsletter._fetch_document_topic_map", lambda db, document_ids: {docs[0].id: "RAG"})
+    monkeypatch.setattr("app.services.newsletter._fetch_documents", lambda db, start_dt, end_dt: docs)
+    monkeypatch.setattr("app.services.newsletter._fetch_document_topic_map", lambda db, document_ids: {docs[0].id: "RAG"})
 
     captured = {}
 
@@ -36,7 +36,7 @@ def test_generate_digest_deterministic(monkeypatch) -> None:
         captured["stats"] = stats
         return SimpleNamespace(date=digest_date, content_md=content_md, stats=stats)
 
-    monkeypatch.setattr("app.newsletter._upsert_digest", fake_upsert)
+    monkeypatch.setattr("app.services.newsletter._upsert_digest", fake_upsert)
 
     digest = generate_digest_for_date(db=object(), digest_date=date(2026, 2, 23), frequency="daily")
 

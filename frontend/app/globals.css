@@ -3,9 +3,143 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: light;
+  color-scheme: light dark;
+  --bg: #fbfaf7;
+  --ink: #1f2d2a;
+  --muted: #4a7c59;
+  --line: #e2e7df;
+  --card: rgba(255, 255, 255, 0.7);
+  --accent: #68b0ab;
+  --paper-glow: rgba(143, 192, 169, 0.12);
+  --paper-glow-2: rgba(200, 213, 185, 0.14);
+  --grid-line: rgba(104, 176, 171, 0.05);
+  --noise: rgba(74, 124, 89, 0.18);
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
-  @apply bg-slate-50 text-slate-900;
+  margin: 0;
+  color: var(--ink);
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 12% 18%, var(--paper-glow), transparent 40%),
+    radial-gradient(circle at 88% 78%, var(--paper-glow-2), transparent 38%),
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+  font-family: "IBM Plex Sans", "Avenir Next", "Segoe UI", sans-serif;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.16;
+  background-image: radial-gradient(var(--noise) 0.6px, transparent 0.6px);
+  background-size: 5px 5px;
+}
+
+.chip-pill {
+  background-color: rgba(255, 255, 255, 0.72);
+  color: #0f172a;
+}
+
+.dark {
+  --bg: #0b1514;
+  --ink: #e7f2ef;
+  --muted: #a8c3b4;
+  --line: #1c2a28;
+  --card: rgba(15, 23, 42, 0.75);
+  --accent: #8fc0a9;
+  --paper-glow: rgba(74, 124, 89, 0.35);
+  --paper-glow-2: rgba(44, 78, 62, 0.3);
+  --grid-line: rgba(143, 192, 169, 0.08);
+  --noise: rgba(200, 213, 185, 0.16);
+}
+
+.dark .text-slate-900 {
+  color: #f1f5f9;
+}
+.dark .text-slate-800 {
+  color: #e2e8f0;
+}
+.dark .text-slate-700 {
+  color: #cbd5f5;
+}
+.dark .text-slate-600 {
+  color: #b0bfce;
+}
+.dark .text-slate-500 {
+  color: #94a3b8;
+}
+
+.dark .bg-white\/90 {
+  background-color: rgba(15, 23, 42, 0.85) !important;
+}
+.dark .bg-white\/80 {
+  background-color: rgba(15, 23, 42, 0.8) !important;
+}
+.dark .bg-white\/70 {
+  background-color: rgba(15, 23, 42, 0.7) !important;
+}
+.dark .bg-white\/60 {
+  background-color: rgba(15, 23, 42, 0.6) !important;
+}
+.dark .bg-slate-50 {
+  background-color: transparent !important;
+}
+
+.dark .border-slate-200 {
+  border-color: #334155 !important;
+}
+.dark .border-slate-300 {
+  border-color: #475569 !important;
+}
+.dark .border-slate-900 {
+  border-color: #e2e8f0 !important;
+}
+
+.dark .chip-pill {
+  background-color: rgba(255, 255, 255, 0.86);
+  color: #0f172a;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+  letter-spacing: 0.02em;
+}
+
+.masonry-grid {
+  display: flex;
+  margin-left: -20px;
+  width: auto;
+}
+
+.masonry-column {
+  padding-left: 20px;
+  background-clip: padding-box;
+}
+
+.masonry-column > article {
+  margin-bottom: 20px;
+}
+
+@media (min-width: 1024px) {
+  .masonry-grid {
+    margin-left: -24px;
+  }
+
+  .masonry-column {
+    padding-left: 24px;
+  }
+
+  .masonry-column > article {
+    margin-bottom: 24px;
+  }
 }

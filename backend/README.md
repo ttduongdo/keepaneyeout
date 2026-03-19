@@ -26,21 +26,22 @@ cp .env.example .env
 ```bash
 cd backend
 alembic upgrade head
-python -m app.seed_topics
+python scripts/seed_topics.py
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 ## Ingestion
 
 ```bash
-python -m app.ingest_arxiv --query "cat:cs.LG OR cat:cs.AI" --max_results 50
-python -m app.ingest_hackernews --list topstories --max_items 50 --min_score 0 --include_comments false --max_comments 0
+python scripts/ingestion/ingest_arxiv.py --max_results 50
+python scripts/ingestion/ingest_hackernews.py --max_items 50 --min_score 0
+python scripts/ingestion/run_all.py
 ```
 
 ## Digest Generation
 
 ```bash
-python -m app.generate_digest --date 2026-02-23
+python scripts/generate_digest.py --date 2026-02-23
 ```
 
 ## Newsletter Sending
@@ -48,13 +49,13 @@ python -m app.generate_digest --date 2026-02-23
 Dry run (writes HTML files to `newsletter_dry_run/<date>/`):
 
 ```bash
-python -m app.send_newsletters --date 2026-02-23 --dry_run true
+python scripts/send_newsletters.py --date 2026-02-23 --dry_run true
 ```
 
 Real send:
 
 ```bash
-python -m app.send_newsletters --date 2026-02-23 --dry_run false
+python scripts/send_newsletters.py --date 2026-02-23 --dry_run false
 ```
 
 ## Newsletter APIs

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <rect width="640" height="360" fill="#f8fafc"/>
+  <rect x="24" y="24" width="592" height="312" rx="24" fill="#e2e8f0"/>
+  <g fill="none" stroke="#0b6bcb" stroke-width="2">
+    <path d="M80 240 C160 120, 240 280, 320 160 C400 40, 480 220, 560 120"/>
+    <circle cx="160" cy="180" r="8" fill="#0b6bcb"/>
+    <circle cx="320" cy="160" r="8" fill="#0b6bcb"/>
+    <circle cx="480" cy="220" r="8" fill="#0b6bcb"/>
+  </g>
+  <text x="48" y="72" font-family="IBM Plex Mono, monospace" font-size="20" fill="#0f172a">ML</text>
+</svg>

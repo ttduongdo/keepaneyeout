@@ -24,8 +24,8 @@ def test_subscription_create_and_unsubscribe(monkeypatch) -> None:
             created_at=datetime.now(tz=UTC),
         )
 
-    monkeypatch.setattr("app.main.upsert_subscription", fake_upsert_subscription)
-    monkeypatch.setattr("app.main.unsubscribe_subscription", lambda db, token: token == "token-123")
+    monkeypatch.setattr("app.routes.api.upsert_subscription", fake_upsert_subscription)
+    monkeypatch.setattr("app.routes.api.unsubscribe_subscription", lambda db, token: token == "token-123")
 
     response = client.post(
         "/subscriptions",

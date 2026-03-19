@@ -1,0 +1,33 @@
+from app.models.base import (
+    Base,
+    Board,
+    BoardPaper,
+    Chunk,
+    Digest,
+    Document,
+    DocumentTopic,
+    Subscription,
+    Topic,
+    TopicRule,
+    Trend,
+    TrendTopic,
+    User,
+    UserTopic,
+)
+
+__all__ = [
+    "Base",
+    "Board",
+    "BoardPaper",
+    "Chunk",
+    "Digest",
+    "Document",
+    "DocumentTopic",
+    "Subscription",
+    "Topic",
+    "TopicRule",
+    "Trend",
+    "TrendTopic",
+    "User",
+    "UserTopic",
+]
