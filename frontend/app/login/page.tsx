@@ -60,6 +60,7 @@ export default function LoginPage() {
     setError(null);
     try {
       const res = await fetch(`${apiBase}/auth/google/login`);
+      console.log("API BASE:", apiBase);
       if (!res.ok) {
         throw new Error("Google OAuth not available");
       }
