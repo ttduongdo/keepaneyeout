@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 import Navbar from "../../components/Navbar";
@@ -12,7 +12,7 @@ import { authFetch } from "../../lib/auth";
 import { MASONRY_BREAKPOINTS } from "../../lib/masonry";
 import { useTopics } from "../../hooks/useTopics";
 
-export default function PaperSearchPage() {
+function PaperSearchContent() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
@@ -120,5 +120,13 @@ export default function PaperSearchPage() {
         />
       </div>
     </main>
+  );
+}
+
+export default function PaperSearchPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-transparent" />}>
+      <PaperSearchContent />
+    </Suspense>
   );
 }
