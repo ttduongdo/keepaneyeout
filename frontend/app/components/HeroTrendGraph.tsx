@@ -44,10 +44,10 @@ export default function HeroTrendGraph({ chartData, topics, activeTopic, highlig
           })}
           {topics.map((topic) => {
             const color = getTopicColor(topic);
-            const maxPoint = chartData.reduce(
+            const maxPoint = chartData.reduce<{ date: string; value: number }>(
               (acc, row) => {
                 const value = typeof row[topic] === "number" ? (row[topic] as number) : 0;
-                return value > acc.value ? { date: row.date as string, value } : acc;
+                return value > acc.value ? { date: String(row.date), value } : acc;
               },
               { date: "", value: 0 }
             );
