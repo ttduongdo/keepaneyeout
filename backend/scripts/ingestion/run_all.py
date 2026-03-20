@@ -3,16 +3,12 @@ from __future__ import annotations
 from pathlib import Path
 import sys
 
-ROOT = Path(__file__).resolve().parents[3]
-BACKEND = ROOT / "backend"
-sys.path.insert(0, str(ROOT))
-sys.path.insert(0, str(BACKEND))
+from scripts.ingestion.ingest_arxiv import ingest_arxiv  # noqa: E402
+from scripts.ingestion.ingest_hackernews import ingest_hackernews  # noqa: E402
+from scripts.ingestion._env import load_project_env  # noqa: E402
 
-from backend.scripts.ingestion.ingest_arxiv import ingest_arxiv  # noqa: E402
-from backend.scripts.ingestion.ingest_hackernews import ingest_hackernews  # noqa: E402
 from app.services.trend_service import update_trends  # noqa: E402
 from app.db import SessionLocal  # noqa: E402
-from backend.scripts.ingestion._env import load_project_env  # noqa: E402
 
 load_project_env()
 
