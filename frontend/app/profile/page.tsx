@@ -8,8 +8,6 @@ import TopicChip from "../components/TopicChip";
 import { useTopics } from "../hooks/useTopics";
 import { authFetch, clearToken, getToken } from "../lib/auth";
 
-const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
-
 type Board = { id: string; name: string };
 
 type BoardDetail = { id: string; name: string; papers: { id: string; title: string; published_date: string }[] };
@@ -52,8 +50,8 @@ export default function ProfilePage() {
     setError(null);
     try {
       const [meRes, boardsRes] = await Promise.all([
-        authFetch(`${apiBase}/me`),
-        authFetch(`${apiBase}/boards`)
+        authFetch("/me"),
+        authFetch("/boards")
       ]);
 
       if (meRes.status === 401 || boardsRes.status === 401) {
@@ -78,7 +76,7 @@ export default function ProfilePage() {
   async function loadBoardPapers(items: Board[]) {
     const collected: BoardDetail["papers"] = [];
     for (const board of items) {
-      const res = await authFetch(`${apiBase}/boards/${board.id}`);
+      const res = await authFetch(`/boards/${board.id}`);
       if (!res.ok) {
         continue;
       }

@@ -6,8 +6,6 @@ import BoardGrid from "../components/BoardGrid";
 import Navbar from "../components/Navbar";
 import { authFetch, clearToken, getToken } from "../lib/auth";
 
-const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
-
 type Board = { id: string; name: string };
 
 type BoardDetail = { id: string; name: string; papers: { id: string }[] };
@@ -27,7 +25,7 @@ export default function BoardsPage() {
   async function loadBoards() {
     setError(null);
     try {
-      const res = await authFetch(`${apiBase}/boards`);
+      const res = await authFetch("/boards");
       if (res.status === 401) {
         clearToken();
         window.location.href = "/login";
@@ -39,7 +37,7 @@ export default function BoardsPage() {
       const data = (await res.json()) as Board[];
       const withCounts = await Promise.all(
         data.map(async (board) => {
-          const detailRes = await authFetch(`${apiBase}/boards/${board.id}`);
+          const detailRes = await authFetch(`/boards/${board.id}`);
           if (!detailRes.ok) {
             return { ...board };
           }

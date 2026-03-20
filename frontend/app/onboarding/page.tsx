@@ -5,8 +5,6 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { authFetch, clearToken, getToken } from "../lib/auth";
 
-const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
-
 const TOPICS = [
   { label: "LLMs", value: "LLMs" },
   { label: "Multimodal Models", value: "Multimodal" },
@@ -41,7 +39,7 @@ export default function OnboardingPage() {
     setSaving(true);
     setError(null);
     try {
-      const res = await authFetch(`${apiBase}/user/topics`, {
+      const res = await authFetch("/user/topics", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ topics: selected })

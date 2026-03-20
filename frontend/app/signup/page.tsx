@@ -5,8 +5,9 @@ import { FormEvent, useEffect, useState } from "react";
 
 import Navbar from "../components/Navbar";
 import { getToken, setToken } from "../lib/auth";
+import { getApiBase } from "../lib/apiBase";
 
-const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
+const apiBase = getApiBase();
 
 type AuthResponse = { access_token: string };
 

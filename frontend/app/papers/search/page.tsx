@@ -12,8 +12,6 @@ import { authFetch } from "../../lib/auth";
 import { MASONRY_BREAKPOINTS } from "../../lib/masonry";
 import { useTopics } from "../../hooks/useTopics";
 
-const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
-
 export default function PaperSearchPage() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Post[]>([]);

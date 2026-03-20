@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 
 import { authFetch, setToken } from "../../lib/auth";
+import { getApiBase } from "../../lib/apiBase";
 
-const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
+const apiBase = getApiBase();
 
 type AuthResponse = { access_token: string };
 
@@ -32,7 +33,7 @@ export default function GoogleOAuthPage() {
       }
       const data = (await res.json()) as AuthResponse;
       setToken(data.access_token);
-      const meRes = await authFetch(`${apiBase}/me`);
+      const meRes = await authFetch("/me");
       if (meRes.ok) {
         const me = (await meRes.json()) as MeResponse;
         if (me.topics && me.topics.length > 0) {

@@ -5,8 +5,9 @@ import { FormEvent, useEffect, useState } from "react";
 
 import Navbar from "../components/Navbar";
 import { authFetch, getToken, setToken } from "../lib/auth";
+import { getApiBase } from "../lib/apiBase";
 
-const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
+const apiBase = getApiBase();
 
 type AuthResponse = { access_token: string };
 
@@ -39,7 +40,7 @@ export default function LoginPage() {
       }
       const data = (await res.json()) as AuthResponse;
       setToken(data.access_token);
-      const topicsRes = await authFetch(`${apiBase}/me`);
+      const topicsRes = await authFetch("/me");
       if (topicsRes.ok) {
         const me = (await topicsRes.json()) as MeResponse;
         if (me.topics && me.topics.length > 0) {

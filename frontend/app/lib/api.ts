@@ -28,6 +28,7 @@ export type TrendTopic = {
 export type TrendTimeseries = Record<string, { date: string; count: number }[]>;
 
 import { authFetch } from "./auth";
+import { getApiBase } from "./apiBase";
 
 export type PostFeedResponse = {
   items: Post[];
@@ -35,7 +36,7 @@ export type PostFeedResponse = {
   has_more: boolean;
 };
 
-const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
+const apiBase = getApiBase();
 
 async function fetchJson<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${apiBase}${path}`, init);

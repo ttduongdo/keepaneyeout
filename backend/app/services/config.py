@@ -1,16 +1,18 @@
 from __future__ import annotations
 
+import os
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(env_file=os.getenv("ENV_FILE", ".env"), extra="ignore")
 
     database_url: str = "postgresql+psycopg://radar_user:radar@localhost:5432/research_radar"
     openai_api_key: str = ""
     openai_embedding_model: str = "text-embedding-3-large"
     openai_chat_model: str = "gpt-4o-mini"
-    cors_allow_origins: str = "*"
+    frontend_url: str = "http://localhost:3000"
 
     reddit_client_id: str = ""
     reddit_client_secret: str = ""

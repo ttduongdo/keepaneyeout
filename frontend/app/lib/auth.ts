@@ -19,7 +19,9 @@ export function clearToken() {
   window.localStorage.removeItem("auth_token");
 }
 
-const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
+import { getApiBase } from "./apiBase";
+
+const apiBase = getApiBase();
 
 function withApiBase(input: RequestInfo): RequestInfo {
   if (typeof input === "string" && input.startsWith("/")) {

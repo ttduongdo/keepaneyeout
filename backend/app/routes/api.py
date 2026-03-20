@@ -53,10 +53,10 @@ app = FastAPI(title="AI Research Radar API")
 
 app.mount("/static", StaticFiles(directory=str(Path(__file__).resolve().parents[1] / "static")), name="static")
 
-origins = [o.strip() for o in settings.cors_allow_origins.split(",") if o.strip()]
+origins = [settings.frontend_url] if settings.frontend_url else []
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins or ["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

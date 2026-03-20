@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { getApiBase } from "../lib/apiBase";
 
 type Digest = {
   id: string;
@@ -10,7 +11,7 @@ type Digest = {
   created_at: string;
 };
 
-const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
+const apiBase = getApiBase();
 
 export default function DigestsPage() {
   const [digests, setDigests] = useState<Digest[]>([]);

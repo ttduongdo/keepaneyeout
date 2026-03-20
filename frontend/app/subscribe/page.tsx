@@ -1,10 +1,11 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
+import { getApiBase } from "../lib/apiBase";
 
 type Topic = { id: string; name: string; description: string };
 
-const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
+const apiBase = getApiBase();
 
 export default function SubscribePage() {
   const [email, setEmail] = useState("");

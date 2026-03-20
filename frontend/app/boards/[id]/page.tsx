@@ -6,8 +6,6 @@ import BoardPage from "../../components/BoardPage";
 import Navbar from "../../components/Navbar";
 import { authFetch, clearToken, getToken } from "../../lib/auth";
 
-const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
-
 type BoardDetail = { id: string; name: string; papers: { id: string; title: string; published_date: string; url?: string }[] };
 
 export default function BoardDetailPage({ params }: { params: { id: string } }) {
@@ -25,7 +23,7 @@ export default function BoardDetailPage({ params }: { params: { id: string } }) 
   async function loadBoard() {
     setError(null);
     try {
-      const res = await authFetch(`${apiBase}/boards/${params.id}`);
+      const res = await authFetch(`/boards/${params.id}`);
       if (res.status === 401) {
         clearToken();
         window.location.href = "/login";

@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 
 import { authFetch } from "../lib/auth";
 
-const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
-
 type TrendSummaryResponse = {
   summary_md: string;
 };
@@ -20,7 +18,7 @@ export default function TrendSummary() {
 
   async function loadSummary() {
     try {
-      const res = await authFetch(`${apiBase}/papers/trends`);
+      const res = await authFetch("/papers/trends");
       if (!res.ok) {
         throw new Error(`Trend summary failed (${res.status})`);
       }
