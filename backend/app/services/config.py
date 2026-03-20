@@ -32,7 +32,10 @@ class Settings(BaseSettings):
 
     google_client_id: str = ""
     google_client_secret: str = ""
-    google_redirect_uri: str = "http://localhost:3000/oauth/google"
+    google_redirect_uri: str = os.getenv(
+    "GOOGLE_REDIRECT_URI",
+    "http://localhost:3000/oauth/google",
+)
 
 
 settings = Settings()
