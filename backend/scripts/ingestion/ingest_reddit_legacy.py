@@ -15,7 +15,7 @@ BACKEND = ROOT / "backend"
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(BACKEND))
 
-from backend.scripts.ingestion._env import load_project_env  # noqa: E402
+from scripts.ingestion._env import load_project_env  # noqa: E402
 
 load_project_env()
 

@@ -21,7 +21,7 @@ from app.db import SessionLocal  # noqa: E402
 from app.services.ingest_utils import document_exists, insert_document_with_chunks  # noqa: E402
 from app.models import Document  # noqa: E402
 from app.services.openai_client import embed_texts  # noqa: E402
-from backend.scripts.ingestion.expand_similar_papers import expand_similar_papers  # noqa: E402
+from scripts.ingestion.expand_similar_papers import expand_similar_papers  # noqa: E402
 
 CATEGORIES = ["cs.AI", "cs.LG", "cs.CL", "cs.CV", "stat.ML"]
 
