@@ -154,7 +154,7 @@ def send_newsletters_for_date(
             EmailMessage(
                 from_email=settings.from_email,
                 to_email=subscription.email,
-                subject=f"AI Research Radar Digest - {digest_date.isoformat()}",
+                subject=f"Pinsight Digest - {digest_date.isoformat()}",
                 html=html,
                 text=text,
             )
@@ -239,7 +239,7 @@ def _render_digest_markdown(
     stats: dict,
 ) -> str:
     lines = [
-        f"# AI Research Radar Digest - {digest_date.isoformat()}",
+        f"# Pinsight Digest - {digest_date.isoformat()}",
         "",
         "## Top papers",
     ]

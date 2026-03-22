@@ -5,7 +5,7 @@ import { TopicsProvider } from "./hooks/useTopics";
 import { ThemeProvider } from "./hooks/useTheme";
 
 export const metadata: Metadata = {
-  title: "AI Research Radar",
+  title: "Pinsight",
   description: "Simple RAG tracker for AI papers"
 };
 

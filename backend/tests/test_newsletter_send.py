@@ -63,7 +63,7 @@ def test_send_newsletters_calls_provider_with_unsubscribe(monkeypatch) -> None:
     message = provider.messages[0]
     assert isinstance(message.from_email, str)
     assert message.to_email == "reader@example.com"
-    assert message.subject == "AI Research Radar Digest - 2026-02-23"
+    assert message.subject == "Pinsight Digest - 2026-02-23"
     assert "unsubscribe?token=abc123" in message.html
     assert "unsubscribe?token=abc123" in message.text
 

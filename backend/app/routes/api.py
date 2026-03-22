@@ -49,7 +49,7 @@ from app.routes.schemas import (
 )
 from app.services.trend_service import get_trend_timeseries, get_trends
 
-app = FastAPI(title="AI Research Radar API")
+app = FastAPI(title="Pinsight API")
 
 app.mount("/static", StaticFiles(directory=str(Path(__file__).resolve().parents[1] / "static")), name="static")
 

@@ -42,7 +42,7 @@ export default function Navbar({ searchQuery, onSearchChange, onSearchSubmit }: 
     <nav className="sticky top-0 z-20 border-b border-slate-200 bg-white/90 backdrop-blur">
       <div className="mx-auto flex w-full max-w-[1500px] items-center gap-4 px-4 py-4 md:px-8">
         <Link href="/" className="text-lg font-semibold text-slate-900">
-          AI Research Radar
+          Pinsight
         </Link>
         <form onSubmit={handleSubmit} className="flex flex-1 items-center">
           <input

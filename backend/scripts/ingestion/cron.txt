@@ -1,4 +1,4 @@
-# AI Research Radar ingestion schedule
+# Pinsight ingestion schedule
 0 3 * * * python backend/scripts/ingestion/ingest_arxiv.py
 0 */6 * * * python backend/scripts/ingestion/ingest_hackernews.py
 0 5 * * 1 python backend/scripts/ingestion/generate_trends.py

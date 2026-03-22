@@ -1,6 +1,6 @@
-# AI Research Radar
+# Pinsight
 
-AI Research Radar ingests AI research and discussions (arXiv + Hacker News), stores them in Postgres/pgvector, and serves a Pinterest‑style discovery feed with topic subscriptions, boards, and an interactive Trend Radar dashboard. It includes search, ask/RAG, builder modes, and newsletter digest pipelines.
+Pinsight ingests AI research and discussions (arXiv + Hacker News), stores them in Postgres/pgvector, and serves a Pinterest‑style discovery feed with topic subscriptions, boards, and an interactive Trend Radar dashboard. It includes search, ask/RAG, builder modes, and newsletter digest pipelines.
 
 ## Architecture
 

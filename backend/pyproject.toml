@@ -1,7 +1,7 @@
 [project]
 name = "ai-research-radar-backend"
 version = "0.1.0"
-description = "Baseline backend for AI Research Radar"
+description = "Baseline backend for Pinsight"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [

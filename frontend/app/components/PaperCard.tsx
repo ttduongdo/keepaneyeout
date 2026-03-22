@@ -64,7 +64,7 @@ export default function PaperCard({ paper, onSave }: PaperCardProps) {
           ) : (
             <span className="text-xs text-slate-400">No URL</span>
           )}
-          <span className="text-[11px] text-slate-400">AI Research Radar</span>
+          <span className="text-[11px] text-slate-400">Pinsight</span>
         </div>
       </div>
     </article>

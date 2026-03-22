@@ -61,7 +61,7 @@ export default function SubscribePage() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-6 md:px-8 md:py-10">
       <h1 className="text-3xl font-semibold">Subscribe</h1>
-      <p className="mt-2 text-sm text-slate-600">Get daily or weekly AI Research Radar digests by email.</p>
+      <p className="mt-2 text-sm text-slate-600">Get daily or weekly Pinsight digests by email.</p>
 
       <form onSubmit={onSubmit} className="mt-4 space-y-4 rounded-2xl border border-slate-300/90 bg-white/70 p-4 backdrop-blur-sm">
         <input
