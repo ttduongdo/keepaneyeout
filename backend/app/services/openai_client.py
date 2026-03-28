@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import random
+import time
+
 from openai import APIError, OpenAI, RateLimitError
 
 from app.services.config import settings
@@ -14,11 +17,28 @@ def build_openai_client() -> OpenAI:
         raise OpenAIServiceError("OPENAI_API_KEY is required")
     return OpenAI(api_key=settings.openai_api_key)
 
+def _with_retry(fn, retries: int = 5, base_sleep: float = 2.0, max_sleep: float = 30.0):
+    for attempt in range(retries):
+        try:
+            return fn()
+        except RateLimitError as exc:
+            if attempt == retries - 1:
+                raise
+            sleep_for = min(max_sleep, base_sleep * (2**attempt)) + random.uniform(0, 1.0)
+            time.sleep(sleep_for)
+        except APIError as exc:
+            status = getattr(exc, "status_code", None)
+            if status is not None and status >= 500 and attempt < retries - 1:
+                sleep_for = min(max_sleep, base_sleep * (2**attempt)) + random.uniform(0, 1.0)
+                time.sleep(sleep_for)
+                continue
+            raise
+
 
 def embed_texts(texts: list[str]) -> list[list[float]]:
     client = build_openai_client()
     try:
-        response = client.embeddings.create(model=settings.openai_embedding_model, input=texts)
+        response = _with_retry(lambda: client.embeddings.create(model=settings.openai_embedding_model, input=texts))
         return [item.embedding for item in response.data]
     except RateLimitError as exc:
         raise OpenAIServiceError(
@@ -37,13 +57,15 @@ def chat_with_context(query: str, context_blocks: list[str]) -> str:
         f"Question: {query}\n\nContext:\n{context}"
     )
     try:
-        completion = client.chat.completions.create(
-            model=settings.openai_chat_model,
-            temperature=0.2,
-            messages=[
-                {"role": "system", "content": "You are a precise research assistant."},
-                {"role": "user", "content": prompt},
-            ],
+        completion = _with_retry(
+            lambda: client.chat.completions.create(
+                model=settings.openai_chat_model,
+                temperature=0.2,
+                messages=[
+                    {"role": "system", "content": "You are a precise research assistant."},
+                    {"role": "user", "content": prompt},
+                ],
+            )
         )
     except RateLimitError as exc:
         raise OpenAIServiceError(
@@ -57,13 +79,15 @@ def chat_with_context(query: str, context_blocks: list[str]) -> str:
 def chat_markdown(system_prompt: str, user_prompt: str) -> str:
     client = build_openai_client()
     try:
-        completion = client.chat.completions.create(
-            model=settings.openai_chat_model,
-            temperature=0.2,
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt},
-            ],
+        completion = _with_retry(
+            lambda: client.chat.completions.create(
+                model=settings.openai_chat_model,
+                temperature=0.2,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt},
+                ],
+            )
         )
     except RateLimitError as exc:
         raise OpenAIServiceError(
