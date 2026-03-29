@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime
+import random
 import time
 from typing import Any
 from urllib.parse import quote_plus
@@ -28,7 +29,12 @@ class ArxivPaper:
 def fetch_arxiv(query: str, max_results: int = 25) -> list[ArxivPaper]:
     url = f"{ARXIV_API}?search_query={quote_plus(query)}&start=0&max_results={max_results}&sortBy=submittedDate&sortOrder=descending"
     def _request():
-        response = httpx.get(url, timeout=30.0, follow_redirects=True)
+        response = httpx.get(
+            url,
+            timeout=30.0,
+            follow_redirects=True,
+            headers={"User-Agent": "Pinsight/1.0"},
+        )
         response.raise_for_status()
         return response
 
@@ -73,13 +79,27 @@ def _text(entry: ET.Element, path: str, ns: dict[str, Any]) -> str:
     return el.text if el is not None and el.text else ""
 
 
-def _with_retry(fn, retries: int = 3, base_sleep: float = 1.0):
+def _with_retry(fn, retries: int = 5, base_sleep: float = 1.5):
     for attempt in range(retries + 1):
         try:
             return fn()
+        except httpx.HTTPStatusError as exc:
+            status = exc.response.status_code if exc.response is not None else None
+            if status not in {429, 500, 502, 503, 504}:
+                raise
+            if attempt >= retries:
+                raise
+            retry_after = exc.response.headers.get("Retry-After") if exc.response is not None else None
+            if retry_after and retry_after.isdigit():
+                sleep_for = float(retry_after)
+            else:
+                sleep_for = base_sleep * (2**attempt)
+            sleep_for += random.uniform(0, 0.5)
+            print(f"[retry] arXiv request failed ({status}); sleeping {sleep_for:.1f}s")
+            time.sleep(sleep_for)
         except (httpx.HTTPError, httpx.TimeoutException) as exc:
             if attempt >= retries:
                 raise
-            sleep_for = base_sleep * (2**attempt)
+            sleep_for = base_sleep * (2**attempt) + random.uniform(0, 0.5)
             print(f"[retry] arXiv request failed ({exc}); sleeping {sleep_for:.1f}s")
             time.sleep(sleep_for)
